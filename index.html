@@ -1,0 +1,145 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Network Graph Visualization</title>
+        <script
+            src="js/vis-network.min.js"></script>
+        <link rel="stylesheet" href="css/styles.css">
+    </head>
+    <body>
+        <div class="container">
+            <div class="graph-container">
+                <div id="mynetwork"></div>
+
+                <div class="graph-legend">
+                    <div class="graph-legend-title">Legend</div>
+                    <div class="legend-item">
+                        <div class="legend-color legend-service-living"></div>
+                        <div>Service living</div>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color legend-service-died"></div>
+                        <div>Service died</div>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color legend-server"></div>
+                        <div>Server</div>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color legend-connect"></div>
+                        <div>Connect Relationship</div>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color legend-manage"></div>
+                        <div>Manage Relationship</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <h1>Network Graph</h1>
+                <div class="section-title">Config</div>
+                <div class="section-content">
+                    <div class="controls">
+                        <select id="cbbConfig" class="select-style">
+                            <option
+                                value="10.222.3.84:2105">10.222.3.84:2105</option>
+                            <option
+                                value="10.222.3.84:18098">10.222.3.84:18098</option>
+                            <option
+                                value="10.225.0.242:2105">10.225.0.242:2105</option>
+                            <option
+                                value="10.225.0.242:18098">10.225.0.242:18098</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="section-title">Refresh Time</div>
+                <div class="section-content">
+                    <div class="controls">
+                        <input type="number" id="refreshTimeInput"
+                            placeholder="1"
+                            class="search-input" min="1" max="60"
+                            step="1">
+                        <button id="SetTimeBtn"><span
+                                class="btn-icon">🔄</span>Set</button>
+                    </div>
+                </div>
+                <div class="section-title">Search</div>
+                <div class="section-content">
+                    <div class="controls">
+                        <div class="search-container">
+                            <input type="text" id="searchInput"
+                                placeholder="Search nodes..."
+                                class="search-input">
+                            <div id="searchResults"
+                                class="search-results"></div>
+                        </div>
+                        <button id="zoomToNodeBtn"><span
+                                class="btn-icon">🔍</span>Zoom to Node</button>
+                    </div>
+                </div>
+
+                <div class="section-title">Data</div>
+                <div class="section-content">
+                    <div class="controls">
+                        <button id="loadAllBtn"><span
+                                class="btn-icon">📊</span>Load All Data</button>
+                    </div>
+                </div>
+
+                <div class="section-title">Layout</div>
+                <div class="section-content">
+                    <div class="controls">
+                        <select id="layoutSelect" class="select-style">
+                            <option value="force">Force-Directed</option>
+                            <option value="hierarchical">Hierarchical</option>
+                            <option value="circular">Circular</option>
+                        </select>
+
+                        <div id="hierarchicalOptions" class="sub-section">
+                            <select id="directionSelect" class="select-style">
+                                <option value="UD">Top to Bottom</option>
+                                <option value="DU">Bottom to Top</option>
+                                <option value="LR">Left to Right</option>
+                                <option value="RL">Right to Left</option>
+                            </select>
+                        </div>
+
+                        <div class="btn-group">
+                            <button id="fitBtn"><span
+                                    class="btn-icon">↔️</span>Fit</button>
+                            <button id="stabilizeBtn"><span
+                                    class="btn-icon">⚖️</span>Stabilize</button>
+                        </div>
+                        <button id="togglePhysicsBtn"><span
+                                class="btn-icon">🧲</span>Toggle
+                            Physics</button>
+                    </div>
+                </div>
+
+                <div class="section-title">Appearance</div>
+                <div class="section-content">
+                    <div class="controls">
+                        <select id="nodeStyleSelect" class="select-style">
+                            <option value="default">Default Style</option>
+                            <option value="larger">Larger Nodes</option>
+                            <option value="minimal">Minimal Style</option>
+                            <option value="detailed">Detailed Labels</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="section-title">Status</div>
+                <div class="section-content">
+                    <div id="status" class="status status-info">Ready to load
+                        data...</div>
+                </div>
+            </div>
+        </div>
+
+        <script src="js/utils.js"></script>
+        <script src="js/network-config.js"></script>
+        <script src="js/app.js"></script>
+    </body>
+</html>
