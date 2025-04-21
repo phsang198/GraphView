@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IjEyNTY1NDYyIn0.eyJhdXRob3JpemF0aW9uIjoiW3tcImlkXCI6XCIwOGE5ZDE1My1kNTBlLTQxNmYtOWI0Zi05MWZlMDY5YzZiZTdcIixcInJvbGVpZFwiOlwiNjA2MTI2NDMtY2I4Yy00ZmM2LWFjZDYtM2YzMDE5ZmFmNDUxXCIsXCJ1c2VyaWRcIjpcIjA4ODI4MGE0LWYxOTYtNDY0Zi04YjAwLTg2OTEzOWQxMzM5MlwifV0iLCJleHAiOjIzNDc5NDU5MDYuODk2MDM0LCJpYXQiOjE3NDMxNDU5MDYuODk2MDM0LCJpc3MiOiJ2YmR3ZiIsIm5iZiI6MTc0MzE0NTkwNi44OTYwMzQsInByb2R1Y3RpZCI6IjZlMjI5ODIyLTkyYTktNDUwMy04YjAxLTk3MWZiNWEwZDNlYyIsInN1YiI6IjA4ODI4MGE0LWYxOTYtNDY0Zi04YjAwLTg2OTEzOWQxMzM5MiJ9.OpjZCLtmS3GupLpxXiRxF54uK3FOuzbAd3sUicTqXxU" // Replace with actual token if required
+                    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDUyMjI0MjIsImlhdCI6MTc0NTIxODgyMiwiaXNzIjoidndmcyIsIm5iZiI6MTc0NTIxODgyMiwicGVybWlzc2lvbnMiOlsiVmlldyIsIkFkZCIsIkVkaXQiLCJEZWxldGUiLCJFeGVjdXRlIiwiSW52b2tlIiwiQWRtaW4iLCJTdXBlckFkbWluIl0sInJvbGVzIjpbIlN1cGVyQWRtaW4iXSwic3ViIjoiYWRtaW4iLCJ0ZW5hbnRJZCI6IjY3ZTUxMTg2OTA4NWNlM2I5MDJiNTA2OCIsInVzZXJJZCI6ImFkbWluIn0.pA-bW-Glof4PGn8El5pmydyUymuRZ7RQzVNmphpNMhY" // Replace with actual token if required
                 }
             });
             
