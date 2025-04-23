@@ -137,12 +137,11 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!isCached) return; // Skip if data is cached
         try {
             let url = 'http://{host}/api/v2/workflow/model/start_name/multi_metric_change_bc/await';
-            let des  = url.replace(/{host}/g, host);
-            const response = await fetch(des, {
+            let des = url.replace(/{host}/g, host);
+            const response = await fetchWithToken(des, {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json",
-                    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDUyMjI0MjIsImlhdCI6MTc0NTIxODgyMiwiaXNzIjoidndmcyIsIm5iZiI6MTc0NTIxODgyMiwicGVybWlzc2lvbnMiOlsiVmlldyIsIkFkZCIsIkVkaXQiLCJEZWxldGUiLCJFeGVjdXRlIiwiSW52b2tlIiwiQWRtaW4iLCJTdXBlckFkbWluIl0sInJvbGVzIjpbIlN1cGVyQWRtaW4iXSwic3ViIjoiYWRtaW4iLCJ0ZW5hbnRJZCI6IjY3ZTUxMTg2OTA4NWNlM2I5MDJiNTA2OCIsInVzZXJJZCI6ImFkbWluIn0.pA-bW-Glof4PGn8El5pmydyUymuRZ7RQzVNmphpNMhY" // Replace with actual token if required
+                    "Content-Type": "application/json"
                 }
             });
 
