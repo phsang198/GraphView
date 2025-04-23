@@ -6,6 +6,56 @@ let host = "10.222.3.84:2105";
 
 let intervalId ; // Biến lưu id của interval hiện tại
 // Initialize network visualization
+let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDUyMjI0MjIsImlhdCI6MTc0NTIxODgyMiwiaXNzIjoidndmcyIsIm5iZiI6MTc0NTIxODgyMiwicGVybWlzc2lvbnMiOlsiVmlldyIsIkFkZCIsIkVkaXQiLCJEZWxldGUiLCJFeGVjdXRlIiwiSW52b2tlIiwiQWRtaW4iLCJTdXBlckFkbWluIl0sInJvbGVzIjpbIlN1cGVyQWRtaW4iXSwic3ViIjoiYWRtaW4iLCJ0ZW5hbnRJZCI6IjY3ZTUxMTg2OTA4NWNlM2I5MDJiNTA2OCIsInVzZXJJZCI6ImFkbWluIn0.pA-bW-Glof4PGn8El5pmydyUymuRZ7RQzVNmphpNMhY";
+
+// Hàm lấy lại token
+async function refreshToken() {
+    const url = "https://gisonline.vietbando.vn/oauth/login";
+    const body = new URLSearchParams({
+        expire: "1000000000",
+        username: "admin",
+        password: "t3private",
+        hold_login: "true"
+    });
+
+    try {
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: body
+        });
+
+        if (!response.ok) {
+            throw new Error("Failed to refresh token");
+        }
+
+        const data = await response.json();
+        token = data.access_token; // Cập nhật token mới
+        console.log("Token refreshed successfully");
+    } catch (error) {
+        console.error("Error refreshing token:", error);
+    }
+}
+    
+    // Hàm gọi API với xử lý lỗi 401
+async function fetchWithToken(url, options) {
+    options.headers = options.headers || {};
+    options.headers["token"] = token;
+
+    let response = await fetch(url, options);
+
+    if (response.status === 401) {
+        console.warn("Token expired, refreshing token...");
+        await refreshToken(); // Lấy lại token
+        options.headers["token"] = token; // Cập nhật token mới
+        response = await fetch(url, options); // Thử lại
+    }
+
+    return response;
+}
+    
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize DOM elements
     const container = document.getElementById('mynetwork');
@@ -30,41 +80,40 @@ document.addEventListener('DOMContentLoaded', function() {
     const serverNames = {};
     const serviceNames = {};
     
-    // Load data from API
+    
+    // Sửa đổi hàm loadData để sử dụng fetchWithToken
     async function loadData(apiUrl) {
-        
         try {
-            const response = await fetch(apiUrl, {
+            const response = await fetchWithToken(apiUrl, {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json",
-                    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDUyMjI0MjIsImlhdCI6MTc0NTIxODgyMiwiaXNzIjoidndmcyIsIm5iZiI6MTc0NTIxODgyMiwicGVybWlzc2lvbnMiOlsiVmlldyIsIkFkZCIsIkVkaXQiLCJEZWxldGUiLCJFeGVjdXRlIiwiSW52b2tlIiwiQWRtaW4iLCJTdXBlckFkbWluIl0sInJvbGVzIjpbIlN1cGVyQWRtaW4iXSwic3ViIjoiYWRtaW4iLCJ0ZW5hbnRJZCI6IjY3ZTUxMTg2OTA4NWNlM2I5MDJiNTA2OCIsInVzZXJJZCI6ImFkbWluIn0.pA-bW-Glof4PGn8El5pmydyUymuRZ7RQzVNmphpNMhY" // Replace with actual token if required
+                    "Content-Type": "application/json"
                 }
             });
-            
+    
             if (!response.ok) {
                 console.error(response);
                 throw new Error("Failed to fetch GEXF content from API");
             }
+    
             const jsonResponse = await response.json();
             const gexfContent = jsonResponse.result?.data?.content;
-
+    
             if (!gexfContent) {
                 throw new Error("Invalid GEXF content in API response");
             }
-
+    
             const parser = new DOMParser();
             const gexfXml = parser.parseFromString(gexfContent, "application/xml");
-
+    
             updateStatus(`Đã load dữ liệu từ API thành công!`, "success");
             return gexfXml;
         } catch (error) {
-            console.error('Error fetching GEXF from API:', error);
+            console.error("Error fetching GEXF from API:", error);
             updateStatus("Lỗi: " + error.message, "error");
             return null;
         }
     }
-
     // Update node colors
     function updateNodeColors() {
         nodes.forEach(node => {
