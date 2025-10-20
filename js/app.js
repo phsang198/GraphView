@@ -22,7 +22,8 @@ async function refreshToken() {
         const response = await fetch(url, {
             method: "POST",
             headers: {
-                "Content-Type": "application/x-www-form-urlencoded"
+                "Content-Type": "application/x-www-form-urlencoded",
+                "x-api-key": "801bd483-42b5-4388-8323-a986bfcfbb37"
             },
             body: body
         });
@@ -87,7 +88,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const response = await fetchWithToken(apiUrl, {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "x-api-key": "801bd483-42b5-4388-8323-a986bfcfbb37"
                 }
             });
     
@@ -136,12 +138,13 @@ document.addEventListener('DOMContentLoaded', function() {
     async function fetchServiceStatuses() {
         if (!isCached) return; // Skip if data is cached
         try {
-            let url = 'http://{host}/api/v2/workflow/model/start_name/multi_metric_change_bc/await';
+            let url = 'http://{host}/api/v2/workflow/model/start_id/67ee3b763a7b3cdb4d011182/await';
             let des = url.replace(/{host}/g, host);
             const response = await fetchWithToken(des, {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "x-api-key": "801bd483-42b5-4388-8323-a986bfcfbb37"
                 }
             });
 
