@@ -2,7 +2,7 @@
  * Main application script for the network graph visualization
  */
 let isCached = false;
-let host = "10.222.3.84:2105";
+let host = "10.222.3.84:5012";
 
 let intervalId ; // Biến lưu id của interval hiện tại
 // Initialize network visualization
@@ -10,7 +10,7 @@ let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDUyMjI0MjIsImlhdC
 
 // Hàm lấy lại token
 async function refreshToken() {
-    const url = "https://gisonline.vietbando.vn/oauth/login";
+    const url = "http://10.222.3.84:5012/oauth/login";
     const body = new URLSearchParams({
         expire: "1000000000",
         username: "admin",
