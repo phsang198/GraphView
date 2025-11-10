@@ -6,51 +6,19 @@ let host = "10.222.3.84:5012";
 
 let intervalId ; // Biến lưu id của interval hiện tại
 // Initialize network visualization
-let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDUyMjI0MjIsImlhdCI6MTc0NTIxODgyMiwiaXNzIjoidndmcyIsIm5iZiI6MTc0NTIxODgyMiwicGVybWlzc2lvbnMiOlsiVmlldyIsIkFkZCIsIkVkaXQiLCJEZWxldGUiLCJFeGVjdXRlIiwiSW52b2tlIiwiQWRtaW4iLCJTdXBlckFkbWluIl0sInJvbGVzIjpbIlN1cGVyQWRtaW4iXSwic3ViIjoiYWRtaW4iLCJ0ZW5hbnRJZCI6IjY3ZTUxMTg2OTA4NWNlM2I5MDJiNTA2OCIsInVzZXJJZCI6ImFkbWluIn0.pA-bW-Glof4PGn8El5pmydyUymuRZ7RQzVNmphpNMhY";
+let token = "801bd483-42b5-4388-8323-a986bfcfbb37";
 
-// Hàm lấy lại token
-async function refreshToken() {
-    const url = "http://10.222.3.84:5012/oauth/login";
-    const body = new URLSearchParams({
-        expire: "1000000000",
-        username: "admin",
-        password: "t3private",
-        hold_login: "true"
-    });
-
-    try {
-        const response = await fetch(url, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
-                "x-api-key": "801bd483-42b5-4388-8323-a986bfcfbb37"
-            },
-            body: body
-        });
-
-        if (!response.ok) {
-            throw new Error("Failed to refresh token");
-        }
-
-        const data = await response.json();
-        token = data.access_token; // Cập nhật token mới
-        console.log("Token refreshed successfully");
-    } catch (error) {
-        console.error("Error refreshing token:", error);
-    }
-}
     
     // Hàm gọi API với xử lý lỗi 401
 async function fetchWithToken(url, options) {
     options.headers = options.headers || {};
-    options.headers["token"] = token;
+    options.headers["x-api-key"] = token;
 
     let response = await fetch(url, options);
 
     if (response.status === 401) {
         console.warn("Token expired, refreshing token...");
         await refreshToken(); // Lấy lại token
-        options.headers["token"] = token; // Cập nhật token mới
         response = await fetch(url, options); // Thử lại
     }
 
@@ -88,8 +56,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const response = await fetchWithToken(apiUrl, {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json",
-                    "x-api-key": "801bd483-42b5-4388-8323-a986bfcfbb37"
+                    "Content-Type": "application/json"
                 }
             });
     
@@ -138,13 +105,12 @@ document.addEventListener('DOMContentLoaded', function() {
     async function fetchServiceStatuses() {
         if (!isCached) return; // Skip if data is cached
         try {
-            let url = 'http://{host}/api/v2/workflow/model/start_id/67ee3b763a7b3cdb4d011182/await';
+            let url = 'http://{host}/api/v2/workflow/model/start_id/67ee3b763a7b3cdb4d011182/await?expiresAfter=1000';
             let des = url.replace(/{host}/g, host);
             const response = await fetchWithToken(des, {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json",
-                    "x-api-key": "801bd483-42b5-4388-8323-a986bfcfbb37"
+                    "Content-Type": "application/json"
                 }
             });
 
@@ -165,6 +131,18 @@ document.addEventListener('DOMContentLoaded', function() {
             serviceStatuses.forEach(status => {
                 const { host, port, isGood, Disk , Ram } = status;
 
+                let color = null;
+                let label = null;
+                if (isGood == "true") {
+                    color = '#2ecc71'; // Gray if null
+                }
+                else if (isGood == "false") {
+                    color = '#e74c3c';
+                }
+                else {
+                    color = '#dfe214ff';
+                    label = '\nNot Checked';
+                }
                 // Find the matching node by comparing host and port
                 const matchingNode = nodes.get({
                     filter: node => node.group === 'Services' &&
@@ -175,10 +153,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 if (matchingNode) {
                     let tmp = matchingNode.label.split('\n')[0]; // Keep the first line of the label
-                    matchingNode.label = tmp + `\nFDisk : ${Disk}%\nFRam: ${Ram}%`; // Update label to show host and port
+                    matchingNode.label = tmp + isGood == "not" ? label : `\nFDisk : ${Disk}%\nFRam: ${Ram}%`; // Update label to show host and port
                     matchingNode.color = {
-                        background: isGood ? '#2ecc71' : '#e74c3c', // Green if good, red if not
-                        border: isGood ? '#27ae60' : '#c0392b'
+                        background: color,
+                        border: color
                     };
                     nodes.update(matchingNode);
                 }
@@ -280,7 +258,7 @@ document.addEventListener('DOMContentLoaded', function() {
         updateStatus("Đang tải dữ liệu...", "info");
 
         try {
-            let url = 'http://{host}/api/v2/workflow/model/start_id/67e4c62828ddf42f3c003dc5/await';
+            let url = 'http://{host}/api/v2/workflow/model/start_id/67e4c62828ddf42f3c003dc5/await?expiresAfter=1000';
             des = url.replace(/{host}/g, host);
 
             const gexfXml = await loadData(des);

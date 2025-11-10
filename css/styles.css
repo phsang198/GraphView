@@ -111,6 +111,9 @@ h1 {
 .legend-service-died {
     background-color: #ff2600;
 }
+.legend-service-not-checked {
+    background-color: #ffee00;
+}
 .legend-server {
     background-color: #3498db;
 }
