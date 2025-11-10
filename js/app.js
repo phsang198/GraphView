@@ -691,5 +691,5 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize after page load
     initCollapsibleSections();
 
-    intervalId = setInterval(fetchServiceStatuses, 1000);
+    intervalId = setInterval(fetchServiceStatuses, 60000);
 });
