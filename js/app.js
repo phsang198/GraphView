@@ -105,7 +105,8 @@ document.addEventListener('DOMContentLoaded', function() {
     async function fetchServiceStatuses() {
         if (!isCached) return; // Skip if data is cached
         try {
-            let url = 'http://{host}/api/v2/workflow/model/start_id/67ee3b763a7b3cdb4d011182/await?expiresAfter=1000';
+            // let url = 'http://{host}/api/v2/workflow/model/start_id/67ee3b763a7b3cdb4d011182/await?expiresAfter=1000';
+            let url = 'http://{host}/workflow/api/v3/models/67ee3b763a7b3cdb4d011182/executions?mode=await&expiresAfter=1000';
             let des = url.replace(/{host}/g, host);
             const response = await fetchWithToken(des, {
                 method: "POST",
@@ -258,7 +259,9 @@ document.addEventListener('DOMContentLoaded', function() {
         updateStatus("Đang tải dữ liệu...", "info");
 
         try {
-            let url = 'http://{host}/api/v2/workflow/model/start_id/67e4c62828ddf42f3c003dc5/await?expiresAfter=1000';
+            // let url = 'http://{host}/api/v2/workflow/model/start_id/67e4c62828ddf42f3c003dc5/await?expiresAfter=1000';
+            let url = 'http://{host}/workflow/api/v3/models/67e4c62828ddf42f3c003dc5/executions?mode=await&expiresAfter=1000';
+
             des = url.replace(/{host}/g, host);
 
             const gexfXml = await loadData(des);
@@ -532,7 +535,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         // Lấy giá trị thời gian làm mới từ input
-        let refreshTime = refreshTimeInput.value*1000 || 1000;
+        let refreshTime = refreshTimeInput.value*1000 || 60000;
         console.log(`Refresh time set to ${refreshTime} s`);
 
         // Tạo interval mới và lưu id
