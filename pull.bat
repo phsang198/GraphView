@@ -1,0 +1,3 @@
+echo GIT PULL
+echo Pulling...
+git pull
